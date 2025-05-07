@@ -1,0 +1,15 @@
+services:
+  nats:
+    image: nats:latest
+    container_name: ${NATS_CONTAINER_NAME}
+    ports:
+      - ${NATS_CLIENT_CONNECTION_PORT}:${NATS_CLIENT_CONNECTION_PORT} # CLIENT connections
+      - ${NATS_HTTP_MONITORING_PORT}:${NATS_HTTP_MONITORING_PORT} # HTTP monitoring
+    restart: unless-stopped
+    command: -js -m ${NATS_HTTP_MONITORING_PORT} # Enable JetStream and HTTP monitoring
+    networks:
+      - nats_network
+
+networks:
+  nats_network:
+    driver: bridge
